@@ -48,23 +48,16 @@ print("Records are: %s " % RECORDS)
     * best way to handle failures? (exceptions? L/R monads?)
 """
 
-# Possible example of what a pipeline-based endpoint might look like:
+# Actions:
 
-@endpoint
-class ResourceEndpoint(object):
-    def __init__(repo, validator=None):
-        self.repo = repo
-        self.validator = validator or lambda input: input
+class ResourceCreator(P):
+    def __init__(validator, repository):
+        self.pipeline = (validator, repository.insert)
 
-    def post(self, req: Request):
-        return self._create_resource(req.POST)
+create_article = ResourceCreator(
+    validator=validate_article, repository=article_respository)
 
-    @property
-    def _create_resource(self):
-        return P(json.loads,
-                validate_article,
-                article_repository.insert,
-                json.dumps)
+# Endpoints:
 
-article_endpoint = ResourceEndpoint(repo=ArticleRepo())
-router.add('/articles', article_endpoint)
+article_endpoint = make_endpoint(post=P(json.loads, create_article, json.dumps))
+# maybe there's some synergy here with a in => ACTION => out flow
