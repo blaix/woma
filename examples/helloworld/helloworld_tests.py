@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from webob import Request
 
-from examples.helloworld import router
+from examples.helloworld.app import router
 
 
 class TestHelloWorldExample(TestCase):
