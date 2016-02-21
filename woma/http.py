@@ -1,14 +1,23 @@
-"""HTTP Request and Response objects.
+"""Woma objects for dealing with HTTP.
 
-These are the objects that are passed to controllers.
-
-They inherit from webob's Request and Response objects, so see
+Request and Response inherit from webob's Request and Response objects, so see
 http://docs.webob.org/en/latest/ for full documentation. The only things
 documented here are the customizations.
 
 """
 from webob import Request as BaseRequest
 from webob import Response as BaseResponse
+
+
+class Client(object):
+    """Make requests to a wsgi app and return the response."""
+
+    def __init__(self, app):
+        self.app = app
+
+    def get(self, path):
+        request = BaseRequest.blank(path)
+        return request.get_response(self.app)
 
 
 class Request(BaseRequest):
