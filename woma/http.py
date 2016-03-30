@@ -16,11 +16,12 @@ class Client(object):
         self.app = app
 
     def request(self, path, method):
+        path = path or '/'
         request = BaseRequest.blank(path)
         request.method = method
         return request.get_response(self.app)
 
-    def get(self, path):
+    def get(self, path=None):
         return self.request(path, 'GET')
 
 

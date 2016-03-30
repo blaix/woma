@@ -3,15 +3,15 @@ from woma.http import Request, Response
 
 
 class Endpoint(object):
-    """Wrap a controller in an Endpoint to turn it into a full wsgi app.
+    """A WSGI app that maps requests to controllers.
 
+    For example:
+
+    >>> from woma.http import Client
     >>> my_controller = lambda request, response: response
     >>> my_endpoint = Endpoint(my_controller)
-
-    >>> request = Request.blank('/')
-    >>> status, headers, body = request.call_application(my_endpoint)
-    >>> status
-    '200 OK'
+    >>> Client(my_endpoint).get().status_code
+    200
 
     """
     def __init__(self, controller):
