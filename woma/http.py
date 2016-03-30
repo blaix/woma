@@ -15,9 +15,13 @@ class Client(object):
     def __init__(self, app):
         self.app = app
 
-    def get(self, path):
+    def request(self, path, method):
         request = BaseRequest.blank(path)
+        request.method = method
         return request.get_response(self.app)
+
+    def get(self, path):
+        return self.request(path, 'GET')
 
 
 class Request(BaseRequest):
