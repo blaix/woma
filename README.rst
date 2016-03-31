@@ -60,6 +60,13 @@ Basic Usage Example
     router = Router()
     router.add('/hello/{name}', hello_endpoint)
 
+To route specific HTTP methods, specify them as kwargs:
+
+.. code:: python
+
+    article_endpoint = Endpoint(
+        get=get_article, put=replace_article, delete=delete_article)
+
 Deploying
 ---------
 

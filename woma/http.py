@@ -15,14 +15,21 @@ class Client(object):
     def __init__(self, app):
         self.app = app
 
-    def request(self, path, method):
+    def request(self, path, method, body=None):
         path = path or '/'
         request = BaseRequest.blank(path)
         request.method = method
+        request.text = body or ''
         return request.get_response(self.app)
 
     def get(self, path=None):
         return self.request(path, 'GET')
+
+    def post(self, path=None, body=None):
+        return self.request(path, 'POST', body)
+
+    def put(self, path=None, body=None):
+        return self.request(path, 'PUT', body)
 
 
 class Request(BaseRequest):

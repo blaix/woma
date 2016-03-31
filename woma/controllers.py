@@ -3,3 +3,10 @@ def not_found(request, response):
     response.status_code = 404
     response.text = "We can't find %s\n" % request.path
     return response
+
+
+def method_not_allowed(request, response):
+    """Default controller used for requests for an unallowed HTTP method."""
+    response.status_code = 405
+    response.text = '%s is not allowed\n' % request.method
+    return response
