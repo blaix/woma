@@ -33,8 +33,7 @@ class Examples(Nosetests):
     """Run doctests and any tests in the examples/ directory."""
 
     def get_args(self, *args, **kwargs):
-        return ['-x', '--with-doctest', '--doctest-extension=rst',
-                'woma', 'examples']
+        return ['-x', 'woma', 'examples']
 
 
 clear = ScreenClearer(all_files=True)
