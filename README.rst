@@ -10,9 +10,9 @@ emphasis on maintanability and testability.
 A Woma project is composed of these layers:
 
 - Actions: core business logic
-- Controllers: request/response logic
-- Endpoints: wraps controllers in full wsgi apps
-- Router: maps request paths to endpoints
+- Controllers: map request/response logic to actions
+- `Endpoints <woma/endpoints.py>`_: map HTTP methods to controllers
+- `Router <woma/router.py>`_: map URLs to endpoints
 
 These layers are conceptual. You are free to organize your code however you
 like. Woma makes no assumption about module naming or location.
