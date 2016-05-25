@@ -16,7 +16,8 @@ class GreetingController(object):
 
     def __call__(self, request, response):
         name = request.kwargs['name']
-        response.text = self.greeter(name)
+        greeting = self.greeter(name)
+        response.write(greeting)
         return response
 
 

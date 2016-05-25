@@ -62,3 +62,14 @@ class Response(BaseResponse):
             status_code=200,
             content_type=request.content_type or 'text/plain',
             charset=request.charset or 'UTF-8')
+
+    def write(self, text):
+        """An alias for `response.text = text`.
+
+        >>> response = Response()
+        >>> response.write('some text')
+        >>> response.text
+        'some text'
+
+        """
+        self.text = text

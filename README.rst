@@ -39,7 +39,8 @@ Basic Usage Example
 
     def hello_controller(request, response):
         name = request.kwargs['name']
-        response.text = say_hello(name)
+        greeting = say_hello(name)
+        response.write(greeting)
         return response
 
     # -------------------------------------------------------------------------

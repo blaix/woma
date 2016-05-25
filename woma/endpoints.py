@@ -24,7 +24,7 @@ class Endpoint(object):
     ...     return response
     ...
     >>> def list_widgets(request, response):
-    ...     response.text = ' '.join(DB)
+    ...     response.write(' '.join(DB))
     ...     return response
     ...
     >>> widget_collection = Endpoint(get=list_widgets, post=create_widget)

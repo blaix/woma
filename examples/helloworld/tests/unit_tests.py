@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tdubs import calling, Stub
+from tdubs import calling, verify, Mock, Stub
 
 from examples.helloworld.app import say_hello, say_goodbye, GreetingController
 
@@ -24,8 +24,8 @@ class TestGreetingController(TestCase):
 
         self.controller = GreetingController(greeter)
         self.request = Stub('request', kwargs={'name': 'the name'})
-        self.response = Stub('response')
+        self.response = Mock('response')
 
     def test_sets_greeter_result_as_response_text(self):
         response = self.controller(self.request, self.response)
-        self.assertEqual(response.text, 'the greeting')
+        verify(response.write).called_with('the greeting')
