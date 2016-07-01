@@ -20,13 +20,13 @@ class TestRouterInit(RouterTestCase):
         verify(self.routes.setdefault).called_with(default)
 
 
-class TestRouterAdd(RouterTestCase):
-    """router.add(path, endpoint)"""
+class TestRouterMapEndpoint(RouterTestCase):
+    """router.map_endpoint(path, endpoint)"""
 
     def test_adds_route_to_routes(self):
         endpoint = Stub('endpoint')
         expected_route = Route(path='/path', endpoint=endpoint)
-        self.router.add('/path', endpoint)
+        self.router.map_endpoint('/path', endpoint)
         verify(self.routes.add).called_with(expected_route)
 
 

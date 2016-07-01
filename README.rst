@@ -59,7 +59,7 @@ Basic Usage Example
 
     from woma.router import Router
     router = Router()
-    router.add('/hello/{name}', hello_endpoint)
+    router.map_endpoint('/hello/{name}', hello_endpoint)
 
 To route specific HTTP methods, specify them as kwargs:
 

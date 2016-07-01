@@ -28,5 +28,5 @@ hello_endpoint = Endpoint(hello_controller)
 goodbye_endpoint = Endpoint(goodbye_controller)
 
 router = Router()
-router.add('/hello/{name}', hello_endpoint)
-router.add('/goodbye/{name}', goodbye_endpoint)
+router.map_endpoint('/hello/{name}', hello_endpoint)
+router.map_endpoint('/goodbye/{name}', goodbye_endpoint)

@@ -42,7 +42,7 @@ class Endpoint(object):
 
     >>> from woma.router import Router
     >>> router = Router()
-    >>> router.add('/widgets', widget_collection)
+    >>> router.map_endpoint('/widgets', widget_collection)
     >>> Client(router).get('/widgets').text
     'widget 1 widget 2'
 

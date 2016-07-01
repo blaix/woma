@@ -19,7 +19,7 @@ class Router(object):
         self.routes = routes or Routes()
         self.setdefault(not_found)
 
-    def add(self, path, endpoint):
+    def map_endpoint(self, path, endpoint):
         """Map the path to the given endpoint.
 
         - path: a string representing a URL path. e.g. '/articles'.
