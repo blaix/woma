@@ -1,4 +1,3 @@
-from woma.endpoints import Endpoint
 from woma.router import Router
 
 
@@ -24,9 +23,6 @@ class GreetingController(object):
 hello_controller = GreetingController(say_hello)
 goodbye_controller = GreetingController(say_goodbye)
 
-hello_endpoint = Endpoint(hello_controller)
-goodbye_endpoint = Endpoint(goodbye_controller)
-
 router = Router()
-router.map_endpoint('/hello/{name}', hello_endpoint)
-router.map_endpoint('/goodbye/{name}', goodbye_endpoint)
+router.map_controllers('/hello/{name}', hello_controller)
+router.map_controllers('/goodbye/{name}', goodbye_controller)

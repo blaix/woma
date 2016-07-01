@@ -11,7 +11,6 @@ A Woma project is composed of these layers:
 
 - Actions: core business logic
 - Controllers: map request/response logic to actions
-- `Endpoints <woma/endpoints.py>`_: map HTTP methods to controllers
 - `Router <woma/router.py>`_: map URLs to endpoints
 
 These layers are conceptual. You are free to organize your code however you
@@ -44,29 +43,20 @@ Basic Usage Example
         return response
 
     # -------------------------------------------------------------------------
-    # Endpoints:
-    # The endpoint wraps your controller in a full wsgi app
-    # (something that can accept environ/start_response)
-    # -------------------------------------------------------------------------
-    
-    from woma.endpoints import Endpoint
-    hello_endpoint = Endpoint(hello_controller)
-
-    # -------------------------------------------------------------------------
     # Router:
     # The router is a wsgi app that maps paths to other wsgi apps.
     # -------------------------------------------------------------------------
 
     from woma.router import Router
     router = Router()
-    router.map_endpoint('/hello/{name}', hello_endpoint)
+    router.map_controllers('/hello/{name}', hello_controller)
 
 To route specific HTTP methods, specify them as kwargs:
 
 .. code:: python
 
-    article_endpoint = Endpoint(
-        get=get_article, put=replace_article, delete=delete_article)
+    router.map_controllers('/articles/{article_id}',
+        get=show_article, patch=update_article, delete=delete_article)
 
 Deploying
 ---------

@@ -3,7 +3,7 @@ import re
 from property_caching import cached_property
 from webob import Request
 
-from woma.endpoints import not_found
+from woma.endpoints import Endpoint, not_found
 from woma.exceptions import NotFound
 
 
@@ -33,6 +33,24 @@ class Router(object):
         """
         route = Route(path, endpoint)
         self.routes.add(route)
+
+    def map_controllers(self, path, default_controller=None, **controllers):
+        """Create an endpoint for the given controllers and add it to router.
+
+        Example:
+
+            router.map_controllers('/path', get=controller1, post=controller2)
+
+        is equivalent to:
+
+            endpoint = Endpoint(get=controller1, post=controller2)
+            router.map_endpoint('/path', endpoint)
+
+        See docs for Router.map_endpoint for more details.
+
+        """
+        endpoint = Endpoint(default_controller, **controllers)
+        self.map_endpoint(path, endpoint)
 
     def setdefault(self, endpoint):
         """Set the default endpoint to use for unmatched paths."""

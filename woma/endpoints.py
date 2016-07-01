@@ -68,5 +68,8 @@ class Endpoint(object):
         response = controller(request, response)
         return response(environ, start_response)
 
+    def __eq__(self, other):
+        return self.controllers == other.controllers
+
 
 not_found = Endpoint(not_found)

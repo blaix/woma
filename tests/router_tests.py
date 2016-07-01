@@ -3,7 +3,7 @@ from unittest import TestCase
 from tdubs import calling, verify, Mock, Stub
 
 from woma.router import Router, Route
-from woma.endpoints import not_found
+from woma.endpoints import Endpoint, not_found
 
 
 class RouterTestCase(TestCase):
@@ -27,6 +27,25 @@ class TestRouterMapEndpoint(RouterTestCase):
         endpoint = Stub('endpoint')
         expected_route = Route(path='/path', endpoint=endpoint)
         self.router.map_endpoint('/path', endpoint)
+        verify(self.routes.add).called_with(expected_route)
+
+
+class TestRouterMapControllers(RouterTestCase):
+    """router.map_controllers(path, **controllers)"""
+
+    def test_adds_an_endpoint_to_router_for_the_given_controllers(self):
+        controller1, controller2 = object(), object()
+        expected_endpoint = Endpoint(get=controller1, post=controller2)
+        expected_route = Route(path='/path', endpoint=expected_endpoint)
+        self.router.map_controllers('/path', get=controller1, post=controller2)
+        verify(self.routes.add).called_with(expected_route)
+
+    def test_accepts_default_controller(self):
+        """can also be called like: router.map_controllers(path, controller)"""
+        controller = object()
+        expected_endpoint = Endpoint(controller)
+        expected_route = Route('/the/path', endpoint=expected_endpoint)
+        self.router.map_controllers('/the/path', controller)
         verify(self.routes.add).called_with(expected_route)
 
 
