@@ -19,6 +19,11 @@ class Router(object):
         self.routes = routes or Routes()
         self.setdefault(not_found)
 
+    @property
+    def map(self):
+        """router.map is an alias for router.map_controllers"""
+        return self.map_controllers
+
     def map_endpoint(self, path, endpoint):
         """Map the path to the given endpoint.
 
