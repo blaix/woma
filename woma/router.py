@@ -24,6 +24,21 @@ class Router(object):
         """router.map is an alias for router.map_controllers"""
         return self.map_controllers
 
+    def add(self, route):
+        """Add a predefined route to the router.
+
+        For example:
+
+            route = Route('/path', endpoint)
+            router.add(route)
+
+        This is a low-level method. Usually, you don't need to define route
+        objects yourself, and can use .map, .map_controllers, or .map_endpoint
+        instead. See the documentation for those methods.
+
+        """
+        self.routes.add(route)
+
     def map_endpoint(self, path, endpoint):
         """Map the path to the given endpoint.
 
@@ -37,7 +52,7 @@ class Router(object):
 
         """
         route = Route(path, endpoint)
-        self.routes.add(route)
+        self.add(route)
 
     def map_controllers(self, path, default_controller=None, **controllers):
         """Create an endpoint for the given controllers and add it to router.

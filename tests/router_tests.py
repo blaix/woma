@@ -20,6 +20,15 @@ class TestRouterInit(RouterTestCase):
         verify(self.routes.setdefault).called_with(default)
 
 
+class TestRouterAdd(RouterTestCase):
+    """router.add(route)"""
+
+    def test_adds_route_to_the_routes_collection(self):
+        route = object()
+        self.router.add(route)
+        verify(self.routes.add).called_with(route)
+
+
 class TestRouterMapEndpoint(RouterTestCase):
     """router.map_endpoint(path, endpoint)"""
 
