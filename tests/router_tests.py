@@ -20,12 +20,12 @@ class TestRouterInit(RouterTestCase):
         verify(self.routes.setdefault).called_with(default)
 
 
-class TestRouterAdd(RouterTestCase):
-    """router.add(route)"""
+class TestRouterAddRoute(RouterTestCase):
+    """router.add_route(route)"""
 
     def test_adds_route_to_the_routes_collection(self):
         route = object()
-        self.router.add(route)
+        self.router.add_route(route)
         verify(self.routes.add).called_with(route)
 
 
@@ -64,12 +64,12 @@ class TestRouterMapControllers(RouterTestCase):
 
 
 class TestRouterMap(TestRouterMapControllers):
-    """router.map aliases router.map_controllers"""
+    """router.add aliases router.map_controllers"""
 
     @property
     def subject(self):
         # The subject of this test, abstracted to test shared behavior
-        return self.router.map
+        return self.router.add
 
 
 class TestRouterSetDefault(RouterTestCase):

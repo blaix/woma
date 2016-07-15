@@ -49,13 +49,13 @@ Basic Usage Example
 
     from woma.router import Router
     router = Router()
-    router.map('/hello/{name}', hello_controller)
+    router.add('/hello/{name}', hello_controller)
 
 To route specific HTTP methods, specify them as kwargs:
 
 .. code:: python
 
-    router.map('/articles/{article_id}',
+    router.add('/articles/{article_id}',
         get=show_article, patch=update_article, delete=delete_article)
 
 Deploying

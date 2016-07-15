@@ -18,7 +18,7 @@ class Router(object):
 
     You will usually route paths to controllers:
 
-        router.map('/path', get=my_controller, post=my_other_controller)
+        router.add('/path', get=my_controller, post=my_other_controller)
 
     All of the HTTP verbs are supported as kwargs.
 
@@ -27,7 +27,7 @@ class Router(object):
 
     Your path can contain dynamic sections:
 
-        router.map('/articles/{article_id}', get=get_article, post=add_article)
+        router.add('/articles/{article_id}', get=get_article, post=add_article)
 
     When the controller is called, the passed ``request`` object will have a
     ``kwargs`` property that holds a dict of the values passed in the dynamic
@@ -49,7 +49,7 @@ class Router(object):
 
         article_endpoint = Endpoint(get=get_article, post=add_article)
         route = Route('/articles/{article_id}', endpoint)
-        router.add(route)
+        router.add_route(route)
 
     **WSGI:**
 
@@ -67,20 +67,20 @@ class Router(object):
         self.setdefault(not_found)
 
     @property
-    def map(self):
-        """router.map is an alias for router.map_controllers"""
+    def add(self):
+        """router.add is an alias for router.map_controllers"""
         return self.map_controllers
 
-    def add(self, route):
+    def add_route(self, route):
         """Add a predefined route to the router.
 
         For example:
 
             route = Route('/path', endpoint)
-            router.add(route)
+            router.add_route(route)
 
         This is a low-level method. Usually, you don't need to define route
-        objects yourself, and can use .map, .map_controllers, or .map_endpoint
+        objects yourself, and can use .add, .map_controllers, or .map_endpoint
         instead. See the documentation for those methods.
 
         """
@@ -99,7 +99,7 @@ class Router(object):
 
         """
         route = Route(path, endpoint)
-        self.add(route)
+        self.add_route(route)
 
     def map_controllers(self, path, default_controller=None, **controllers):
         """Create an endpoint for the given controllers and add it to router.

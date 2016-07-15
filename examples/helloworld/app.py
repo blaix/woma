@@ -24,5 +24,5 @@ hello_controller = GreetingController(say_hello)
 goodbye_controller = GreetingController(say_goodbye)
 
 router = Router()
-router.map('/hello/{name}', hello_controller)
-router.map('/goodbye/{name}', goodbye_controller)
+router.add('/hello/{name}', hello_controller)
+router.add('/goodbye/{name}', goodbye_controller)
