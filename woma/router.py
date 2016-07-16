@@ -3,12 +3,59 @@ import re
 from property_caching import cached_property
 from webob import Request
 
-from woma.endpoints import not_found
+from woma.endpoints import Endpoint, not_found
 from woma.exceptions import NotFound
 
 
 class Router(object):
-    """WSGI app that can route paths to other WSGI apps (called endpoints)."""
+    """Map URL paths to handlers. Supports being used as WSGI callable.
+
+    High-level API
+    ---------------
+
+        from woma.router import Router
+        router = Router()
+
+    You will usually route paths to controllers:
+
+        router.add('/path', get=my_controller, post=my_other_controller)
+
+    All of the HTTP verbs are supported as kwargs.
+
+    Dynamic path segments
+    ----------------------
+
+    Your path can contain dynamic sections:
+
+        router.add('/articles/{article_id}', get=get_article, post=add_article)
+
+    When the controller is called, the passed ``request`` object will have a
+    ``kwargs`` property that holds a dict of the values passed in the dynamic
+    parts of the URL. For example, on requests to ``/articles/3``,
+    the incoming ``request.kwargs`` will be ``{'article_id': 3}``.
+
+    Low-level API
+    --------------
+
+    Interally, controllers are wrapped in a `woma.endpoints.Endpoint`.  If you
+    need to customize the endpoint (e.g. to add middleware), you can route
+    paths directly to endpoints yourself. The above example is equivalent to:
+
+        article_endpoint = Endpoint(get=get_article, post=add_article)
+        router.map_endpoint('/articles/{article_id}', endpoint)
+
+    If you need to get even lower-level, you can define `woma.router.Route`
+    objects yourself. The above example is equivalent to:
+
+        article_endpoint = Endpoint(get=get_article, post=add_article)
+        route = Route('/articles/{article_id}', endpoint)
+        router.add_route(route)
+
+    **WSGI:**
+
+    Routers are WSGI callables. See `woma.router.Route.__call__` for details.
+
+    """
 
     def __init__(self, routes=None):
         """Initialize a router, optionally with a preloaded Routes object.
@@ -19,7 +66,27 @@ class Router(object):
         self.routes = routes or Routes()
         self.setdefault(not_found)
 
-    def add(self, path, endpoint):
+    @property
+    def add(self):
+        """router.add is an alias for router.map_controllers"""
+        return self.map_controllers
+
+    def add_route(self, route):
+        """Add a predefined route to the router.
+
+        For example:
+
+            route = Route('/path', endpoint)
+            router.add_route(route)
+
+        This is a low-level method. Usually, you don't need to define route
+        objects yourself, and can use .add, .map_controllers, or .map_endpoint
+        instead. See the documentation for those methods.
+
+        """
+        self.routes.add(route)
+
+    def map_endpoint(self, path, endpoint):
         """Map the path to the given endpoint.
 
         - path: a string representing a URL path. e.g. '/articles'.
@@ -32,7 +99,25 @@ class Router(object):
 
         """
         route = Route(path, endpoint)
-        self.routes.add(route)
+        self.add_route(route)
+
+    def map_controllers(self, path, default_controller=None, **controllers):
+        """Create an endpoint for the given controllers and add it to router.
+
+        Example:
+
+            router.map_controllers('/path', get=controller1, post=controller2)
+
+        is equivalent to:
+
+            endpoint = Endpoint(get=controller1, post=controller2)
+            router.map_endpoint('/path', endpoint)
+
+        See docs for Router.map_endpoint for more details.
+
+        """
+        endpoint = Endpoint(default_controller, **controllers)
+        self.map_endpoint(path, endpoint)
 
     def setdefault(self, endpoint):
         """Set the default endpoint to use for unmatched paths."""
@@ -40,7 +125,17 @@ class Router(object):
         self.routes.setdefault(route)
 
     def __call__(self, environ, start_response):
-        """The wsgi callable."""
+        """The wsgi callable.
+
+        When called, a route is found that matches the path in the ``environ``,
+        and ``environ`` and ``start_response`` are passed through to the
+        route's ``endpoint`` property, and the result is returned.
+
+        Dynamic path segments are added as a ``'router.kwargs'`` key to the
+        ``environ`` before passing it to the endpoint. The endpoint is the
+        thing that turns that into ``request.kwargs`` when calling controllers.
+
+        """
         request = Request(environ)
         route = self.routes.get(request.path)
         environ['router.kwargs'] = route.kwargs

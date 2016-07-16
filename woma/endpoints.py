@@ -42,7 +42,7 @@ class Endpoint(object):
 
     >>> from woma.router import Router
     >>> router = Router()
-    >>> router.add('/widgets', widget_collection)
+    >>> router.map_endpoint('/widgets', widget_collection)
     >>> Client(router).get('/widgets').text
     'widget 1 widget 2'
 
@@ -67,6 +67,9 @@ class Endpoint(object):
             request.method.lower(), method_not_allowed)
         response = controller(request, response)
         return response(environ, start_response)
+
+    def __eq__(self, other):
+        return self.controllers == other.controllers
 
 
 not_found = Endpoint(not_found)
