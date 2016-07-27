@@ -44,7 +44,7 @@ Basic Usage Example
 
     # -------------------------------------------------------------------------
     # Router:
-    # The router is a wsgi app that maps paths to other wsgi apps.
+    # The router is a wsgi app that maps paths to controllers.
     # -------------------------------------------------------------------------
 
     from woma.router import Router
