@@ -20,7 +20,7 @@ Basic Usage Example
 -------------------
 
 .. code:: python
-     
+
     # -------------------------------------------------------------------------
     # Actions:
     # Your actions should be normal python code that you can use anywhere.
@@ -65,7 +65,7 @@ The router is a valid wsgi application. You can serve it however you would
 normally serve a wsgi app. Woma doesn't handle this for you.
 
 For example, using uwsgi, you could save the above file as ``app.py`` and run::
-    
+
     $ pip install uwsgi
     $ uwsgi --http :9090 --wsgi-file app.py --callable router &
     $ curl localhost:9090/hello/World
@@ -104,3 +104,16 @@ Things are still very very early. Don't use this for anything real yet.
 
 See `the issues <https://github.com/blaix/woma/issues>`_ for an idea of whats
 missing and where things are headed.
+
+Development
+------------
+
+Clone the project.
+
+Install the dependencies::
+
+    pip install -e .[dev]
+
+Run the tests::
+
+    nosetests
