@@ -17,7 +17,6 @@ setup(
     author='Justin Blake',
     author_email='justin@blaix.com',
     packages=['woma'],
-
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -32,12 +31,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
     ],
-
-    install_requires=[
-        'property-caching>=1.0,<2.0',
-        'WebOb>=1.5,<2.0',
-    ],
-
+    install_requires=['property-caching>=1.0,<2.0', 'WebOb>=1.5,<2.0'],
     # TODO: move test requirements to tox
     extras_require={
         'dev': [
@@ -48,6 +42,6 @@ setup(
             'tdubs>=0.1,<0.2',
             'testtube>=1.0,<2',
             'spec>=1.3,<2',
-        ],
+        ]
     },
 )
